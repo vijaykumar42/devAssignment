@@ -1,4 +1,3 @@
-
 const date = []
 const sku = []
 const unitPrice = []
@@ -73,42 +72,67 @@ function monthWiseTotalSales() {
 // popular item & top revenue item
 function mostPopularItem() {
 
-// using spread operator to filter the sku array
-  let filteredSku = (a)=> [...new Set(a)]
-  const filteredSkuArray = filteredSku(sku)
-  filteredSkuArray.pop()
-  // console.log(filteredSkuArray);
+  const filteredSkuArrayJan = []
+  const filteredSkuArrayFeb = []
+  const filteredSkuArrayMar = []
 
-  let jan = Array(filteredSkuArray.length).fill(0)
-  let feb = Array(filteredSkuArray.length).fill(0)
-  let mar = Array(filteredSkuArray.length).fill(0)
-  let janRevenue = Array(filteredSkuArray.length).fill(0)
-  let febRevenue = Array(filteredSkuArray.length).fill(0)
-  let marRevenue = Array(filteredSkuArray.length).fill(0)
+  let jan = []
+  let feb = []
+  let mar = []
+  let janRevenue = []
+  let febRevenue = []
+  let marRevenue = []
+
+  let itemObjJan = {}
+  let itemObjFeb = {}
+  let itemObjMar = {}
+  let revenueObjJan = {}
+  let revenueObjFeb = {}
+  let revenueObjMar = {}
 
 
-  for (var i = 0; i < filteredSkuArray.length; i++) {
-    for (var j = 0; j < date.length-1; j++) {
-      if(date[j] >= "2019-01-01" && date[j] <= "2019-01-31"){
-        if(filteredSkuArray[i]==sku[j]){
-          jan[i] += quantity[j];
-          janRevenue[i] += totalPrice[j]
-        }
+    for (var i = 0; i < date.length-1; i++) {
+
+      if(date[i] >= "2019-01-01" && date[i] <= "2019-01-31"){
+        itemObjJan[sku[i]] = itemObjJan[sku[i]]?itemObjJan[sku[i]]+quantity[i]:quantity[i]
+        revenueObjJan[sku[i]] = revenueObjJan[sku[i]]?revenueObjJan[sku[i]]+totalPrice[i]:totalPrice[i]
       }
-      if(date[j] >= "2019-02-01" && date[j] <= "2019-02-28"){
-        if(filteredSkuArray[i]==sku[j]){
-          feb[i] += quantity[j];
-          febRevenue[i] += totalPrice[j]
-        }
+      if(date[i] >= "2019-02-01" && date[i] <= "2019-02-28"){
+        itemObjFeb[sku[i]] = itemObjFeb[sku[i]]?itemObjFeb[sku[i]]+quantity[i]:quantity[i]
+        revenueObjFeb[sku[i]] = revenueObjFeb[sku[i]]?revenueObjFeb[sku[i]]+totalPrice[i]:totalPrice[i]
       }
-      if(date[j] >= "2019-03-01" && date[j] <= "2019-03-31"){
-        if(filteredSkuArray[i]==sku[j]){
-          mar[i] += quantity[j];
-          marRevenue[i] += totalPrice[j];
-        }
+      if(date[i] >= "2019-03-01" && date[i] <= "2019-03-31"){
+        itemObjMar[sku[i]] = itemObjMar[sku[i]]?itemObjMar[sku[i]]+quantity[i]:quantity[i]
+        revenueObjMar[sku[i]] = revenueObjMar[sku[i]]?revenueObjMar[sku[i]]+totalPrice[i]:totalPrice[i]
       }
+
     }
-  }
+
+
+    for (var x in itemObjJan) {
+      jan.push(itemObjJan[x])
+      filteredSkuArrayJan.push(x)
+    }
+
+    for (var x in itemObjFeb) {
+      feb.push(itemObjFeb[x])
+      filteredSkuArrayFeb.push(x)
+    }
+
+    for (var x in itemObjMar) {
+      mar.push(itemObjMar[x])
+      filteredSkuArrayMar.push(x)
+    }
+
+    for (var x in revenueObjJan) {
+      janRevenue.push(revenueObjJan[x])
+    }
+    for (var x in revenueObjFeb) {
+      febRevenue.push(revenueObjFeb[x])
+    }
+    for (var x in revenueObjMar) {
+      marRevenue.push(revenueObjMar[x])
+    }
 
 
 // find highest number in array
@@ -125,13 +149,13 @@ const LargestNum = (input)=>{
 // console.log(LargestNum(jan),LargestNum(feb),LargestNum(mar),Math.min(...jan),Math.min(...feb),Math.min(...mar));
 // console.log(jan.indexOf(LargestNum(jan)), feb.indexOf(LargestNum(feb)), mar.indexOf(LargestNum(mar)));
 
-const popularItemJan = filteredSkuArray[jan.indexOf(LargestNum(jan))]
-const popularItemFeb = filteredSkuArray[feb.indexOf(LargestNum(feb))]
-const popularItemMar = filteredSkuArray[mar.indexOf(LargestNum(mar))]
+const popularItemJan = filteredSkuArrayJan[jan.indexOf(LargestNum(jan))]
+const popularItemFeb = filteredSkuArrayFeb[feb.indexOf(LargestNum(feb))]
+const popularItemMar = filteredSkuArrayMar[mar.indexOf(LargestNum(mar))]
 
-const topRevenueJan = filteredSkuArray[janRevenue.indexOf(LargestNum(janRevenue))]
-const topRevenueFeb = filteredSkuArray[febRevenue.indexOf(LargestNum(febRevenue))]
-const topRevenueMar = filteredSkuArray[marRevenue.indexOf(LargestNum(marRevenue))]
+const topRevenueJan = filteredSkuArrayJan[janRevenue.indexOf(LargestNum(janRevenue))]
+const topRevenueFeb = filteredSkuArrayFeb[febRevenue.indexOf(LargestNum(febRevenue))]
+const topRevenueMar = filteredSkuArrayMar[marRevenue.indexOf(LargestNum(marRevenue))]
 
 //  populatItem each month
 console.log("Most popular item (most quantity sold) in each month:-" + popularItemJan, popularItemFeb, popularItemMar);
@@ -153,7 +177,7 @@ function janTotalItems() {
   let janCount=0
   for (var j = 0; j < date.length-1; j++) {
     if(date[j] >= "2019-01-01" && date[j] <= "2019-01-31"){
-      if(filteredSkuArray[5]==sku[j]){
+      if(filteredSkuArrayJan[jan.indexOf(LargestNum(jan))]==sku[j]){
         janCount++
       }
     }
@@ -164,7 +188,7 @@ function febTotalItems() {
   let febCount=0
   for (var j = 0; j < date.length-1; j++) {
     if(date[j] >= "2019-02-01" && date[j] <= "2019-02-28"){
-      if(filteredSkuArray[5]==sku[j]){
+      if(filteredSkuArrayFeb[feb.indexOf(LargestNum(feb))]==sku[j]){
         febCount++
       }
     }
@@ -175,7 +199,7 @@ function marTotalItems() {
   let  marCount=0
   for (var j = 0; j < date.length-1; j++) {
     if(date[j] >= "2019-03-01" && date[j] <= "2019-03-31"){
-      if(filteredSkuArray[5]==sku[j]){
+      if(filteredSkuArrayMar[mar.indexOf(LargestNum(mar))]==sku[j]){
         marCount++
       }
     }
