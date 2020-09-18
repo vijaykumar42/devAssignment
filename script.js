@@ -1,8 +1,10 @@
-const date = []
-const sku = []
-const unitPrice = []
-const quantity = []
-const totalPrice = []
+var date = []
+var sku = []
+var unitPrice = []
+var quantity = []
+var totalPrice = []
+
+const totalData = {}
 
 
 getData();
@@ -12,15 +14,44 @@ async function getData() {
 
   const rows = data.split('\n').slice(1)
 
+  const title = data.split('\n').slice(0,1)[0].split(',')
+  for (var t of title) {
+    t = t.split(" ")[0]
+    totalData[t]=[]
+  }
+
+console.log(title);
+
+
   rows.forEach((row) => {
     const rows = row.split(',');
-    date.push(rows[0])
-    sku.push(rows[1])
-    unitPrice.push(Number(rows[2]))
-    quantity.push(Number(rows[3]))
-    totalPrice.push(Number(rows[4]))
+
+    let index =0
+   for (var x in totalData) {
+    let netvalue = Number(rows[index])?Number(rows[index]):rows[index]
+    // console.log(netvalue,x, Number(rows[index]), Number(rows[index]));
+    totalData[x].push(netvalue)
+    index=index+1
+   }
+
+    // date.push(rows[0])
+    // sku.push(rows[1])
+    // unitPrice.push(Number(rows[2]))
+    // quantity.push(Number(rows[3]))
+    // totalPrice.push(Number(rows[4]))
   });
 
+date = totalData.Date
+sku = totalData.SKU
+quantity = totalData.Quantity
+unitPrice = totalData.Unit
+totalPrice = totalData.Total
+
+console.log(date);
+
+
+
+console.log(totalData);
 
 // console.log(date);
 // console.log(sku);
